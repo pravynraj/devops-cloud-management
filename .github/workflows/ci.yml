@@ -1,19 +1,10 @@
-name: CI Pipeline
-
-on:
-  push:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Run Build
-      run: echo "Build successful"
-
-    - name: Run Tests
-      run: echo "No tests configured"
+    - name: Slack Notification
+      if: always()
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        payload: |
+          {
+            "text": "CI Pipeline Status: ${{ job.status }}"
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
